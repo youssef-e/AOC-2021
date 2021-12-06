@@ -2,12 +2,11 @@ package dp2
 
 import (
 	"app/pkg/inputReader"
-	"fmt"
 	"strconv"
 )
 
 type slidingDepthCalcBoard struct {
-	PreviousValue string
+	PreviousValue window
 	Counter       int
 }
 
@@ -25,27 +24,27 @@ func DepthSpeed2() (int, error) {
 		return 0, err
 	}
 
-	calc := slidingDepthCalcBoard{}
-	for _, line := range lines {
-
-		if calc.PreviousValue != "" {
-			current, err := strconv.Atoi(line)
-			if err != nil {
-				fmt.Println(err.Error())
-				continue
-			}
-			previous, err := strconv.Atoi(calc.PreviousValue)
-			if err != nil {
-				fmt.Println(err.Error())
-				continue
-			}
-
-			if current > previous {
+	calc := slidingDepthCalcBoard{PreviousValue: window{Sum: -1}}
+	for i, line := range lines {
+		switch i {
+		case 0:
+			calc.PreviousValue.A, _ = strconv.Atoi(line)
+		case 1:
+			calc.PreviousValue.B, _ = strconv.Atoi(line)
+		case 2:
+			calc.PreviousValue.C, _ = strconv.Atoi(line)
+			calc.PreviousValue.Sum = calc.PreviousValue.A + calc.PreviousValue.B + calc.PreviousValue.C
+		default:
+			calc.PreviousValue.A = calc.PreviousValue.B
+			calc.PreviousValue.B = calc.PreviousValue.C
+			calc.PreviousValue.C, _ = strconv.Atoi(line)
+			previousSum := calc.PreviousValue.Sum
+			calc.PreviousValue.Sum = calc.PreviousValue.A + calc.PreviousValue.B + calc.PreviousValue.C
+			if calc.PreviousValue.Sum > previousSum {
 				calc.Counter++
 			}
 		}
 
-		calc.PreviousValue = line
 	}
 	return calc.Counter, nil
 }
