@@ -3,6 +3,8 @@ package main
 import (
 	"app/DayOne/dp1"
 	"app/DayOne/dp2"
+	"app/DayTwo/p1"
+	"app/DayTwo/p2"
 	"flag"
 	"fmt"
 	"log"
@@ -31,6 +33,18 @@ func Run() error {
 		fmt.Println(result)
 	case "depthSpeed2":
 		result, err := dp2.DepthSpeed2()
+		if err != nil {
+			return err
+		}
+		fmt.Println(result)
+	case "area1":
+		result, err := p1.Area()
+		if err != nil {
+			return err
+		}
+		fmt.Println(result)
+	case "area2":
+		result, err := p2.Area()
 		if err != nil {
 			return err
 		}
